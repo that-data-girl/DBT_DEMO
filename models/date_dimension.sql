@@ -5,10 +5,11 @@ SELECT
 TO_TIMESTAMP(STARTED_AT) AS STARTED_AT,
 DATE(TO_TIMESTAMP(STARTED_AT)) AS DATE_STARTED_AT,
 HOUR(TO_TIMESTAMP(STARTED_AT)) AS HOUR_STARTED_AT,
-CASE WHEN dayname(TO_TIMESTAMP(STARTED_AT)) IN ('Sat','Sun')
-  THEN 'Weekend' ELSE 'BusinessDay' END AS DAY_TYPE
-FROM {{ source('demo', 'bike') }}
+{{ day_type('STARTED_AT') }} as DAY_TYPE,
 
+{{get_season('STARTED_AT')}} as SEASON
+
+     FROM {{ source('demo', 'bike') }}
 )
 
 SELECT 
